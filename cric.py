@@ -1,15 +1,17 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
 import webbrowser
 
+
 class Ui_mainwindow(object):
     def setupUi(self, mainwindow):
         import requests
         from bs4 import BeautifulSoup
         URL = "https://www.cricbuzz.com"
         r = requests.get(URL)
-        soup = BeautifulSoup(r.content,features='lxml')
+
+        soup = BeautifulSoup(r.content, features='lxml')
         table = soup.find_all('li', {
-            'class': 'cb-col cb-col-25 cb-mtch-blk cb-vid-sml-card-api videos-carousal-item cb-carousal-item-large cb-view-all-ga'})
+            'class': 'cb-view-all-ga cb-match-card cb-bg-white'})
         # print(table)
 
         mainwindow.setObjectName("mainwindow")
@@ -22,15 +24,18 @@ class Ui_mainwindow(object):
         self.hbox.addWidget(self.pushButton,0,0)
         self.pushButton.setCursor(QtGui.QCursor(QtCore.Qt.PointingHandCursor))
         self.pushButton.setObjectName("pushButton")
-        c = []
+        # c = []
 
         font = QtGui.QFont()
         font.setBold(True)
         font.setPointSize(10)
         for li in table:
             match = li.text.strip()
+            x = match.replace('points table','')
+            y = x.replace('schedule','')
             b3 = QtWidgets.QPushButton(self.centralwidget)
-            b3.setText(match)
+            # print(x)
+            b3.setText(y)
             self.hbox.addWidget(b3)
             b3.setStyleSheet('QPushButton {background-color: red; color: white; border:1px solid black}')
             b3.setFont(font)
